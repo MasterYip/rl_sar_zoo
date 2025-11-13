@@ -1,232 +1,218 @@
 <mujoco model="elspider_air">
-  <compiler angle="radian" meshdir="../meshes" autolimits="true" />
-
-  <option cone="elliptic" impratio="100" />
-
   <default>
-    <default class="el4">
-      <geom friction="0.6" margin="0.001" condim="6"/>
-      <joint damping="0.1" armature="0.01" frictionloss="0.2"/>
-      <motor ctrlrange="-33.5 33.5"/>
-      <default class="haa">
-        <joint axis="0 0 1"/>
-      </default>
-      <default class="hfe">
-        <joint axis="0 0 1"/>
-      </default>
-      <default class="kfe">
-        <joint axis="0 0 1"/>
-      </default>
+    <default class="robot">
       <default class="visual">
-        <geom type="mesh" contype="0" conaffinity="0" group="2"/>
+        <geom contype="0" conaffinity="0" group="2" />
       </default>
       <default class="collision">
-        <geom group="3"/>
-        <default class="foot">
-          <geom type="sphere" size="0.02" priority="1" condim="6"
-            friction="0.6 0.02 0.01"/>
-        </default>
+        <geom contype="0" conaffinity="1" group="3" />
       </default>
     </default>
   </default>
 
-  <asset>
-    <material name="metal" rgba=".9 .95 .95 1" />
-    <material name="black" rgba="0 0 0 1" />
-    <material name="gray" rgba="0.4 0.4 0.4 1" />
-    <material name="dark_gray" rgba="0.2 0.2 0.2 1" />
-    
-    <!-- Mesh assets for all leg parts -->
-    <mesh file="RF_HIP.STL" />
-    <mesh file="RF_THIGH.STL" />
-    <mesh file="RF_SHANK.STL" />
-    <mesh file="RF_FOOT.STL" />
-    
-    <mesh file="RM_HIP.STL" />
-    <mesh file="RM_THIGH.STL" />
-    <mesh file="RM_SHANK.STL" />
-    <mesh file="RM_FOOT.STL" />
-    
-    <mesh file="RB_HIP.STL" />
-    <mesh file="RB_THIGH.STL" />
-    <mesh file="RB_SHANK.STL" />
-    <mesh file="RB_FOOT.STL" />
-    
-    <mesh file="LF_HIP.STL" />
-    <mesh file="LF_THIGH.STL" />
-    <mesh file="LF_SHANK.STL" />
-    <mesh file="LF_FOOT.STL" />
-    
-    <mesh file="LM_HIP.STL" />
-    <mesh file="LM_THIGH.STL" />
-    <mesh file="LM_SHANK.STL" />
-    <mesh file="LM_FOOT.STL" />
-    
-    <mesh file="LB_HIP.STL" />
-    <mesh file="LB_THIGH.STL" />
-    <mesh file="LB_SHANK.STL" />
-    <mesh file="LB_FOOT.STL" />
-  </asset>
+  <compiler angle="radian" meshdir="../meshes" balanceinertia="true" />
+
+  <visual>
+    <global offwidth="3840" offheight="2160" />
+  </visual>
 
   <worldbody>
-    <body name="base" pos="0 0 0.3" childclass="el4">
-      <inertial pos="0 0 0" mass="5.0" diaginertia="0.1 0.1 0.05" />
-      <freejoint />
-      <geom type="box" size="0.3 0.15 0.03" class="collision" />
-      <site name="imu" pos="0 0 0" />
-
-      <!-- RF leg: Right Front -->
-      <body name="RF_HIP" pos="0.3 -0.08 0.011">
-        <inertial pos="0 -0.12 0" mass="0.678" diaginertia="0.001 0.001 0.0005" />
-        <joint name="RF_HAA" class="haa" range="-1.57 1.57" />
-        <geom mesh="RF_HIP" material="gray" class="visual" />
-        <geom type="cylinder" size="0.03 0.05" pos="0 -0.075 0" quat="0.707107 0.707107 0 0" class="collision" />
-        <body name="RF_THIGH" pos="0.0355 -0.14999 -0.045056" quat="0 -0.707107 0 0.707107">
-          <inertial pos="0.114 0 0" mass="1.152" diaginertia="0.006 0.006 0.001" />
-          <joint name="RF_HFE" class="hfe" range="-1.57 1.57" />
-          <geom mesh="RF_THIGH" material="gray" class="visual" />
-          <geom type="capsule" size="0.02 0.065" pos="0.065 0 0" quat="0.707107 0 0.707107 0" class="collision" />
-          <body name="RF_SHANK" pos="0.13 0 0" quat="0 0 0.707107 0.707107">
-            <inertial pos="0 -0.07 0" mass="0.241" diaginertia="0.0015 0.0015 0.0001" />
-            <joint name="RF_KFE" class="kfe" range="-2.8 2.8" />
-            <geom mesh="RF_SHANK" material="gray" class="visual" />
-            <geom type="capsule" size="0.015 0.116" pos="0 -0.116 0" class="collision" />
-            <body name="RF_FOOT" pos="0 -0.232 0.018">
-              <inertial pos="0 0 0" mass="0.05" diaginertia="0.0001 0.0001 0.0001" />
-              <geom mesh="RF_FOOT" material="dark_gray" class="visual" />
-              <geom name="RF_foot" class="foot" pos="0 0 0" />
+    <body name="base" childclass="robot" pos="0 0 0.336">
+      <geom name="base_visual" type="box" size="0.0005 0.0005 0.0005" material="default_material" class="visual" />
+      <body name="trunk">
+        <inertial pos="0.00000732 0.00000000 0.02428745" mass="15.8991" diaginertia="0.0926086 0.47054913 0.53896766" />
+        <geom name="trunk_collision" type="mesh" mesh="collision_BASE" class="collision" />
+        <geom name="trunk_visual" type="mesh" mesh="trunk_BASE" material="default_material" class="visual" />
+        <body name="RF_HIP" pos="0.3 -0.08 0.011">
+          <inertial pos="-0.01146909 -0.12306389 -0.03643601" mass="1.20924153" diaginertia="0.00506259 0.00134204 0.00448477" />
+          <joint name="RF_HAA" type="hinge" range="-0.785 0.785" axis="0 0 1" />
+          <geom name="RF_HIP_collision" type="mesh" mesh="collision_RF_HIP" class="collision" />
+          <geom name="RF_HIP_visual" type="mesh" mesh="RF_HIP_RF_HIP" material="default_material" class="visual" />
+          <body name="RF_THIGH" pos="0.0355 -0.14999 -0.045056" quat="0 0.7071 0 0.7071">
+            <inertial pos="0.11424797 -0.00005753  -0.01976803" mass="0.92523512" diaginertia="0.0006569 0.00209449 0.00237655" />
+            <joint name="RF_HFE" type="hinge" range="-0.5233 3.14" axis="0 0 1" />
+            <geom name="RF_THIGH_collision" type="mesh" mesh="collision_RF_THIGH" class="collision" />
+            <geom name="RF_THIGH_visual" type="mesh" mesh="RF_THIGH_RF_THIGH" material="default_material" class="visual" />
+            <body name="RF_SHANK" pos="0.13 0 0" quat="0 0.7071 0.7071 0">
+              <inertial pos="0.0 -0.07024046 -0.00923673" mass="0.28148664" diaginertia="0.00256638 9.216e-05 0.00258818" />
+              <joint name="RF_KFE" type="hinge" range="-0.6978 3.925" axis="0 0 1" />
+              <geom name="RF_SHANK_collision" type="mesh" mesh="collision_RF_SHANK" class="collision" />
+              <geom name="RF_SHANK_visual" type="mesh" mesh="RF_SHANK_RF_SHANK" material="default_material" class="visual" />
+              <body name="RF_FOOT" pos="0 -0.232 -0.018">
+                <inertial pos="0.00000000 -0.0070918 0.00000000" mass="0.01901289" diaginertia="3.96e-06 5.73e-06 3.96e-06" />
+                <geom name="RF_FOOT_collision" type="sphere" size="0.02" class="collision" />
+                <geom name="RF_FOOT_visual" type="mesh" mesh="RF_FOOT_RF_FOOT" material="default_material" class="visual" />
+              </body>
+            </body>
+          </body>
+        </body>
+        <body name="RM_HIP" pos="0 -0.14 0.011">
+          <inertial pos="-0.01146909 -0.12306389 -0.03643601" mass="1.20924153" diaginertia="0.00506259 0.00134204 0.00448477" />
+          <joint name="RM_HAA" type="hinge" range="-0.785 0.785" axis="0 0 1" />
+          <geom name="RM_HIP_collision" type="mesh" mesh="collision_RM_HIP" class="collision" />
+          <geom name="RM_HIP_visual" type="mesh" mesh="RM_HIP_RM_HIP" material="default_material" class="visual" />
+          <body name="RM_THIGH" pos="0.0355 -0.14999 -0.045056" quat="0 0.7071 0 0.7071">
+            <inertial pos="0.11424797 -0.00005753  -0.01976803" mass="0.92523512" diaginertia="0.0006569 0.00209449 0.00237655" />
+            <joint name="RM_HFE" type="hinge" range="-0.5233 3.14" axis="0 0 1" />
+            <geom name="RM_THIGH_collision" type="mesh" mesh="collision_RM_THIGH" class="collision" />
+            <geom name="RM_THIGH_visual" type="mesh" mesh="RM_THIGH_RM_THIGH" material="default_material" class="visual" />
+            <body name="RM_SHANK" pos="0.13 0 0" quat="0 0.7071 0.7071 0">
+              <inertial pos="0.0 -0.07024046 -0.00923673" mass="0.28148664" diaginertia="0.00256638 9.216e-05 0.00258818" />
+              <joint name="RM_KFE" type="hinge" range="-0.6978 3.925" axis="0 0 1" />
+              <geom name="RM_SHANK_collision" type="mesh" mesh="collision_RM_SHANK" class="collision" />
+              <geom name="RM_SHANK_visual" type="mesh" mesh="RM_SHANK_RM_SHANK" material="default_material" class="visual" />
+              <body name="RM_FOOT" pos="0 -0.232 -0.018">
+                <inertial pos="0.00000000 -0.0070918 0.00000000" mass="0.01901289" diaginertia="3.96e-06 5.73e-06 3.96e-06" />
+                <geom name="RM_FOOT_collision" type="sphere" size="0.02" class="collision" />
+                <geom name="RM_FOOT_visual" type="mesh" mesh="RM_FOOT_RM_FOOT" material="default_material" class="visual" />
+              </body>
+            </body>
+          </body>
+        </body>
+        <body name="RB_HIP" pos="-0.3 -0.08 0.011">
+          <inertial pos="0.01146909 -0.12306389 -0.03643601" mass="1.20924153" diaginertia="0.00506259 0.00134204 0.00448477" />
+          <joint name="RB_HAA" type="hinge" range="-0.785 0.785" axis="0 0 1" />
+          <geom name="RB_HIP_collision" type="mesh" mesh="collision_RB_HIP" class="collision" />
+          <geom name="RB_HIP_visual" type="mesh" mesh="RB_HIP_RB_HIP" material="default_material" class="visual" />
+          <body name="RB_THIGH" pos="-0.0355 -0.14999 -0.045056" quat="0 0.7071 0 0.7071">
+            <inertial pos="0.11424797 -0.00005753  0.01976803" mass="0.92523512" diaginertia="0.0006569 0.00209449 0.00237655" />
+            <joint name="RB_HFE" type="hinge" range="-0.5233 3.14" axis="0 0 1" />
+            <geom name="RB_THIGH_collision" type="mesh" mesh="collision_RB_THIGH" class="collision" />
+            <geom name="RB_THIGH_visual" type="mesh" mesh="RB_THIGH_RB_THIGH" material="default_material" class="visual" />
+            <body name="RB_SHANK" pos="0.13 0 0" quat="0 0.7071 0.7071 0">
+              <inertial pos="0.0 -0.07024046 0.00923673" mass="0.28148664" diaginertia="0.00256638 9.216e-05 0.00258818" />
+              <joint name="RB_KFE" type="hinge" range="-0.6978 3.925" axis="0 0 1" />
+              <geom name="RB_SHANK_collision" type="mesh" mesh="collision_RB_SHANK" class="collision" />
+              <geom name="RB_SHANK_visual" type="mesh" mesh="RB_SHANK_RB_SHANK" material="default_material" class="visual" />
+              <body name="RB_FOOT" pos="0 -0.232 0.018">
+                <inertial pos="0.00000000 -0.0070918 0.00000000" mass="0.01901289" diaginertia="3.96e-06 5.73e-06 3.96e-06" />
+                <geom name="RB_FOOT_collision" type="sphere" size="0.02" class="collision" />
+                <geom name="RB_FOOT_visual" type="mesh" mesh="RB_FOOT_RB_FOOT" material="default_material" class="visual" />
+              </body>
+            </body>
+          </body>
+        </body>
+        <body name="LF_HIP" pos="0.3 0.08 0.011" quat="0 -1 0 0">
+          <inertial pos="-0.01146909 -0.12306389 0.03643601" mass="1.20924153" diaginertia="0.00506259 0.00134204 0.00448477" />
+          <joint name="LF_HAA" type="hinge" range="-0.785 0.785" axis="0 0 1" />
+          <geom name="LF_HIP_collision" type="mesh" mesh="collision_LF_HIP" class="collision" />
+          <geom name="LF_HIP_visual" type="mesh" mesh="LF_HIP_LF_HIP" material="default_material" class="visual" />
+          <body name="LF_THIGH" pos="0.0355 -0.14999 0.045056" quat="0 0.7071 0 -0.7071">
+            <inertial pos="0.11424797 -0.00005753  0.01976803" mass="0.92523512" diaginertia="0.0006569 0.00209449 0.00237655" />
+            <joint name="LF_HFE" type="hinge" range="-0.5233 3.14" axis="0 0 1" />
+            <geom name="LF_THIGH_collision" type="mesh" mesh="collision_LF_THIGH" class="collision" />
+            <geom name="LF_THIGH_visual" type="mesh" mesh="LF_THIGH_LF_THIGH" material="default_material" class="visual" />
+            <body name="LF_SHANK" pos="0.13 0 0" quat="0 -0.7071 -0.7071 0">
+              <inertial pos="-0.0 -0.07024046 0.00923673" mass="0.28148664" diaginertia="0.00256638 9.216e-05 0.00258818" />
+              <joint name="LF_KFE" type="hinge" range="-0.6978 3.925" axis="0 0 1" />
+              <geom name="LF_SHANK_collision" type="mesh" mesh="collision_LF_SHANK" class="collision" />
+              <geom name="LF_SHANK_visual" type="mesh" mesh="LF_SHANK_LF_SHANK" material="default_material" class="visual" />
+              <body name="LF_FOOT" pos="0 -0.232 0.018" quat="0 0 1 0">
+                <inertial pos="0.00000000 -0.0070918 0.00000000" mass="0.01901289" diaginertia="3.96e-06 5.73e-06 3.96e-06" />
+                <geom name="LF_FOOT_collision" type="sphere" size="0.02" class="collision" />
+                <geom name="LF_FOOT_visual" type="mesh" mesh="LF_FOOT_LF_FOOT" material="default_material" class="visual" />
+              </body>
+            </body>
+          </body>
+        </body>
+        <body name="LM_HIP" pos="0 0.14 0.011" quat="0 -1 0 0">
+          <inertial pos="-0.01146909 -0.12306389 0.03643601" mass="1.20924153" diaginertia="0.00506259 0.00134204 0.00448477" />
+          <joint name="LM_HAA" type="hinge" range="-0.785 0.785" axis="0 0 1" />
+          <geom name="LM_HIP_collision" type="mesh" mesh="collision_LM_HIP" class="collision" />
+          <geom name="LM_HIP_visual" type="mesh" mesh="LM_HIP_LM_HIP" material="default_material" class="visual" />
+          <body name="LM_THIGH" pos="0.0355 -0.14999 0.045056" quat="0 0.7071 0 -0.7071">
+            <inertial pos="0.11424797 -0.00005753  0.01976803" mass="0.92523512" diaginertia="0.0006569 0.00209449 0.00237655" />
+            <joint name="LM_HFE" type="hinge" range="-0.5233 3.14" axis="0 0 1" />
+            <geom name="LM_THIGH_collision" type="mesh" mesh="collision_LM_THIGH" class="collision" />
+            <geom name="LM_THIGH_visual" type="mesh" mesh="LM_THIGH_LM_THIGH" material="default_material" class="visual" />
+            <body name="LM_SHANK" pos="0.13 0 0" quat="0 -0.7071 -0.7071 0">
+              <inertial pos="-0.0 -0.07024046 0.00923673" mass="0.28148664" diaginertia="0.00256638 9.216e-05 0.00258818" />
+              <joint name="LM_KFE" type="hinge" range="-0.6978 3.925" axis="0 0 1" />
+              <geom name="LM_SHANK_collision" type="mesh" mesh="collision_LM_SHANK" class="collision" />
+              <geom name="LM_SHANK_visual" type="mesh" mesh="LM_SHANK_LM_SHANK" material="default_material" class="visual" />
+              <body name="LM_FOOT" pos="0 -0.232 0.018" quat="0 0 1 0">
+                <inertial pos="0.00000000 -0.0070918 0.00000000" mass="0.01901289" diaginertia="3.96e-06 5.73e-06 3.96e-06" />
+                <geom name="LM_FOOT_collision" type="sphere" size="0.02" class="collision" />
+                <geom name="LM_FOOT_visual" type="mesh" mesh="LM_FOOT_LM_FOOT" material="default_material" class="visual" />
+              </body>
+            </body>
+          </body>
+        </body>
+        <body name="LB_HIP" pos="-0.3 0.08 0.011" quat="0 -1 0 0">
+          <inertial pos="0.01146909 -0.12306389 0.03643601" mass="1.20924153" diaginertia="0.00506259 0.00134204 0.00448477" />
+          <joint name="LB_HAA" type="hinge" range="-0.785 0.785" axis="0 0 1" />
+          <geom name="LB_HIP_collision" type="mesh" mesh="collision_LB_HIP" class="collision" />
+          <geom name="LB_HIP_visual" type="mesh" mesh="LB_HIP_LB_HIP" material="default_material" class="visual" />
+          <body name="LB_THIGH" pos="-0.0355 -0.14999 0.045056" quat="0 0.7071 0 -0.7071">
+            <inertial pos="0.11424797 -0.00005753  -0.01976803" mass="0.92523512" diaginertia="0.0006569 0.00209449 0.00237655" />
+            <joint name="LB_HFE" type="hinge" range="-0.5233 3.14" axis="0 0 1" />
+            <geom name="LB_THIGH_collision" type="mesh" mesh="collision_LB_THIGH" class="collision" />
+            <geom name="LB_THIGH_visual" type="mesh" mesh="LB_THIGH_LB_THIGH" material="default_material" class="visual" />
+            <body name="LB_SHANK" pos="0.13 0 0" quat="0 0.7071 0.7071 0">
+              <inertial pos="-0.0 -0.07024046 -0.00923673" mass="0.28148664" diaginertia="0.00256638 9.216e-05 0.00258818" />
+              <joint name="LB_KFE" type="hinge" range="-0.6978 3.925" axis="0 0 1" />
+              <geom name="LB_SHANK_collision" type="mesh" mesh="collision_LB_SHANK" class="collision" />
+              <geom name="LB_SHANK_visual" type="mesh" mesh="LB_SHANK_LB_SHANK" material="default_material" class="visual" />
+              <body name="LB_FOOT" pos="0 -0.232 -0.018" quat="0 0 1 0">
+                <inertial pos="0.00000000 -0.0070918 0.00000000" mass="0.01901289" diaginertia="3.96e-06 5.73e-06 3.96e-06" />
+                <geom name="LB_FOOT_collision" type="sphere" size="0.02" class="collision" />
+                <geom name="LB_FOOT_visual" type="mesh" mesh="LB_FOOT_LB_FOOT" material="default_material" class="visual" />
+              </body>
             </body>
           </body>
         </body>
       </body>
-
-      <!-- RM leg: Right Middle -->
-      <body name="RM_HIP" pos="0 -0.14 0.011">
-        <inertial pos="0 -0.12 0" mass="0.678" diaginertia="0.001 0.001 0.0005" />
-        <joint name="RM_HAA" class="haa" range="-1.57 1.57" />
-        <geom mesh="RM_HIP" material="gray" class="visual" />
-        <geom type="cylinder" size="0.03 0.05" pos="0 -0.075 0" quat="0.707107 0.707107 0 0" class="collision" />
-        <body name="RM_THIGH" pos="0.0355 -0.14999 -0.045056" quat="0 -0.707107 0 0.707107">
-          <inertial pos="0.114 0 0" mass="1.152" diaginertia="0.006 0.006 0.001" />
-          <joint name="RM_HFE" class="hfe" range="-1.57 1.57" />
-          <geom mesh="RM_THIGH" material="gray" class="visual" />
-          <geom type="capsule" size="0.02 0.065" pos="0.065 0 0" quat="0.707107 0 0.707107 0" class="collision" />
-          <body name="RM_SHANK" pos="0.13 0 0" quat="0 0 0.707107 0.707107">
-            <inertial pos="0 -0.07 0" mass="0.241" diaginertia="0.0015 0.0015 0.0001" />
-            <joint name="RM_KFE" class="kfe" range="-2.8 2.8" />
-            <geom mesh="RM_SHANK" material="gray" class="visual" />
-            <geom type="capsule" size="0.015 0.116" pos="0 -0.116 0" class="collision" />
-            <body name="RM_FOOT" pos="0 -0.232 0.018">
-              <inertial pos="0 0 0" mass="0.05" diaginertia="0.0001 0.0001 0.0001" />
-              <geom mesh="RM_FOOT" material="dark_gray" class="visual" />
-              <geom name="RM_foot" class="foot" pos="0 0 0" />
-            </body>
-          </body>
-        </body>
-      </body>
-
-      <!-- RB leg: Right Back -->
-      <body name="RB_HIP" pos="-0.3 -0.08 0.011">
-        <inertial pos="0 -0.12 0" mass="0.678" diaginertia="0.001 0.001 0.0005" />
-        <joint name="RB_HAA" class="haa" range="-1.57 1.57" />
-        <geom mesh="RB_HIP" material="gray" class="visual" />
-        <geom type="cylinder" size="0.03 0.05" pos="0 -0.075 0" quat="0.707107 0.707107 0 0" class="collision" />
-        <body name="RB_THIGH" pos="0.0355 -0.14999 -0.045056" quat="0 -0.707107 0 0.707107">
-          <inertial pos="0.114 0 0" mass="1.152" diaginertia="0.006 0.006 0.001" />
-          <joint name="RB_HFE" class="hfe" range="-1.57 1.57" />
-          <geom mesh="RB_THIGH" material="gray" class="visual" />
-          <geom type="capsule" size="0.02 0.065" pos="0.065 0 0" quat="0.707107 0 0.707107 0" class="collision" />
-          <body name="RB_SHANK" pos="0.13 0 0" quat="0 0 0.707107 0.707107">
-            <inertial pos="0 -0.07 0" mass="0.241" diaginertia="0.0015 0.0015 0.0001" />
-            <joint name="RB_KFE" class="kfe" range="-2.8 2.8" />
-            <geom mesh="RB_SHANK" material="gray" class="visual" />
-            <geom type="capsule" size="0.015 0.116" pos="0 -0.116 0" class="collision" />
-            <body name="RB_FOOT" pos="0 -0.232 -0.018">
-              <inertial pos="0 0 0" mass="0.05" diaginertia="0.0001 0.0001 0.0001" />
-              <geom mesh="RB_FOOT" material="dark_gray" class="visual" />
-              <geom name="RB_foot" class="foot" pos="0 0 0" />
-            </body>
-          </body>
-        </body>
-      </body>
-
-      <!-- LF leg: Left Front -->
-      <body name="LF_HIP" pos="0.3 0.08 0.011" quat="0 0 0 1">
-        <inertial pos="0 -0.12 0" mass="0.678" diaginertia="0.001 0.001 0.0005" />
-        <joint name="LF_HAA" class="haa" range="-1.57 1.57" />
-        <geom mesh="LF_HIP" material="gray" class="visual" />
-        <geom type="cylinder" size="0.03 0.05" pos="0 -0.075 0" quat="0.707107 0.707107 0 0" class="collision" />
-        <body name="LF_THIGH" pos="0.0355 -0.14999 0.045056" quat="0 0.707107 0 0.707107">
-          <inertial pos="0.114 0 0" mass="1.152" diaginertia="0.006 0.006 0.001" />
-          <joint name="LF_HFE" class="hfe" range="-1.57 1.57" />
-          <geom mesh="LF_THIGH" material="gray" class="visual" />
-          <geom type="capsule" size="0.02 0.065" pos="0.065 0 0" quat="0.707107 0 0.707107 0" class="collision" />
-          <body name="LF_SHANK" pos="0.13 0 0" quat="0 0 -0.707107 0.707107">
-            <inertial pos="0 -0.07 0" mass="0.241" diaginertia="0.0015 0.0015 0.0001" />
-            <joint name="LF_KFE" class="kfe" range="-2.8 2.8" />
-            <geom mesh="LF_SHANK" material="gray" class="visual" />
-            <geom type="capsule" size="0.015 0.116" pos="0 -0.116 0" class="collision" />
-            <body name="LF_FOOT" pos="0 -0.232 0.018" quat="0 0 1 0">
-              <inertial pos="0 0 0" mass="0.05" diaginertia="0.0001 0.0001 0.0001" />
-              <geom mesh="LF_FOOT" material="dark_gray" class="visual" />
-              <geom name="LF_foot" class="foot" pos="0 0 0" />
-            </body>
-          </body>
-        </body>
-      </body>
-
-      <!-- LM leg: Left Middle -->
-      <body name="LM_HIP" pos="0 0.14 0.011" quat="0 0 0 1">
-        <inertial pos="0 -0.12 0" mass="0.678" diaginertia="0.001 0.001 0.0005" />
-        <joint name="LM_HAA" class="haa" range="-1.57 1.57" />
-        <geom mesh="LM_HIP" material="gray" class="visual" />
-        <geom type="cylinder" size="0.03 0.05" pos="0 -0.075 0" quat="0.707107 0.707107 0 0" class="collision" />
-        <body name="LM_THIGH" pos="0.0355 -0.14999 0.045056" quat="0 0.707107 0 0.707107">
-          <inertial pos="0.114 0 0" mass="1.152" diaginertia="0.006 0.006 0.001" />
-          <joint name="LM_HFE" class="hfe" range="-1.57 1.57" />
-          <geom mesh="LM_THIGH" material="gray" class="visual" />
-          <geom type="capsule" size="0.02 0.065" pos="0.065 0 0" quat="0.707107 0 0.707107 0" class="collision" />
-          <body name="LM_SHANK" pos="0.13 0 0" quat="3.14159 0 -0.707107 0.707107">
-            <inertial pos="0 -0.07 0" mass="0.241" diaginertia="0.0015 0.0015 0.0001" />
-            <joint name="LM_KFE" class="kfe" range="-2.8 2.8" />
-            <geom mesh="LM_SHANK" material="gray" class="visual" />
-            <geom type="capsule" size="0.015 0.116" pos="0 -0.116 0" class="collision" />
-            <body name="LM_FOOT" pos="0 -0.232 0.018" quat="0 3.14159 0 0">
-              <inertial pos="0 0 0" mass="0.05" diaginertia="0.0001 0.0001 0.0001" />
-              <geom mesh="LM_FOOT" material="dark_gray" class="visual" />
-              <geom name="LM_foot" class="foot" pos="0 0 0" />
-            </body>
-          </body>
-        </body>
-      </body>
-
-      <!-- LB leg: Left Back -->
-      <body name="LB_HIP" pos="-0.3 0.08 0.011" quat="0 0 0 1">
-        <inertial pos="0 -0.12 0" mass="0.678" diaginertia="0.001 0.001 0.0005" />
-        <joint name="LB_HAA" class="haa" range="-1.57 1.57" />
-        <geom mesh="LB_HIP" material="gray" class="visual" />
-        <geom type="cylinder" size="0.03 0.05" pos="0 -0.075 0" quat="0.707107 0.707107 0 0" class="collision" />
-        <body name="LB_THIGH" pos="0.0355 -0.14999 0.045056" quat="0 0.707107 0 0.707107">
-          <inertial pos="0.114 0 0" mass="1.152" diaginertia="0.006 0.006 0.001" />
-          <joint name="LB_HFE" class="hfe" range="-1.57 1.57" />
-          <geom mesh="LB_THIGH" material="gray" class="visual" />
-          <geom type="capsule" size="0.02 0.065" pos="0.065 0 0" quat="0.707107 0 0.707107 0" class="collision" />
-          <body name="LB_SHANK" pos="0.13 0 0" quat="0 0 -0.707107 0.707107">
-            <inertial pos="0 -0.07 0" mass="0.241" diaginertia="0.0015 0.0015 0.0001" />
-            <joint name="LB_KFE" class="kfe" range="-2.8 2.8" />
-            <geom mesh="LB_SHANK" material="gray" class="visual" />
-            <geom type="capsule" size="0.015 0.116" pos="0 -0.116 0" class="collision" />
-            <body name="LB_FOOT" pos="0 -0.232 0.018" quat="0 0 1 0">
-              <inertial pos="0 0 0" mass="0.05" diaginertia="0.0001 0.0001 0.0001" />
-              <geom mesh="LB_FOOT" material="dark_gray" class="visual" />
-              <geom name="LB_foot" class="foot" pos="0 0 0" />
-            </body>
-          </body>
-        </body>
-      </body>
-
     </body>
+    <light pos="0 0 2." dir="0 0 -1" directional="true" />
   </worldbody>
+
+  <asset>
+    <material name="default_material" rgba="0.7 0.7 0.7 1" />
+    <mesh name="collision_BASE" file="BASE.STL" />
+    <mesh name="trunk_BASE" file="BASE.STL" />
+    <mesh name="collision_RF_HIP" file="RF_HIP.STL" />
+    <mesh name="RF_HIP_RF_HIP" file="RF_HIP.STL" />
+    <mesh name="collision_RF_THIGH" file="RF_THIGH.STL" />
+    <mesh name="RF_THIGH_RF_THIGH" file="RF_THIGH.STL" />
+    <mesh name="collision_RF_SHANK" file="RF_SHANK.STL" />
+    <mesh name="RF_SHANK_RF_SHANK" file="RF_SHANK.STL" />
+    <mesh name="RF_FOOT_RF_FOOT" file="RF_FOOT.STL" />
+    <mesh name="collision_RM_HIP" file="RM_HIP.STL" />
+    <mesh name="RM_HIP_RM_HIP" file="RM_HIP.STL" />
+    <mesh name="collision_RM_THIGH" file="RM_THIGH.STL" />
+    <mesh name="RM_THIGH_RM_THIGH" file="RM_THIGH.STL" />
+    <mesh name="collision_RM_SHANK" file="RM_SHANK.STL" />
+    <mesh name="RM_SHANK_RM_SHANK" file="RM_SHANK.STL" />
+    <mesh name="RM_FOOT_RM_FOOT" file="RM_FOOT.STL" />
+    <mesh name="collision_RB_HIP" file="RB_HIP.STL" />
+    <mesh name="RB_HIP_RB_HIP" file="RB_HIP.STL" />
+    <mesh name="collision_RB_THIGH" file="RB_THIGH.STL" />
+    <mesh name="RB_THIGH_RB_THIGH" file="RB_THIGH.STL" />
+    <mesh name="collision_RB_SHANK" file="RB_SHANK.STL" />
+    <mesh name="RB_SHANK_RB_SHANK" file="RB_SHANK.STL" />
+    <mesh name="RB_FOOT_RB_FOOT" file="RB_FOOT.STL" />
+    <mesh name="collision_LF_HIP" file="LF_HIP.STL" />
+    <mesh name="LF_HIP_LF_HIP" file="LF_HIP.STL" />
+    <mesh name="collision_LF_THIGH" file="LF_THIGH.STL" />
+    <mesh name="LF_THIGH_LF_THIGH" file="LF_THIGH.STL" />
+    <mesh name="collision_LF_SHANK" file="LF_SHANK.STL" />
+    <mesh name="LF_SHANK_LF_SHANK" file="LF_SHANK.STL" />
+    <mesh name="LF_FOOT_LF_FOOT" file="LF_FOOT.STL" />
+    <mesh name="collision_LM_HIP" file="LM_HIP.STL" />
+    <mesh name="LM_HIP_LM_HIP" file="LM_HIP.STL" />
+    <mesh name="collision_LM_THIGH" file="LM_THIGH.STL" />
+    <mesh name="LM_THIGH_LM_THIGH" file="LM_THIGH.STL" />
+    <mesh name="collision_LM_SHANK" file="LM_SHANK.STL" />
+    <mesh name="LM_SHANK_LM_SHANK" file="LM_SHANK.STL" />
+    <mesh name="LM_FOOT_LM_FOOT" file="LM_FOOT.STL" />
+    <mesh name="collision_LB_HIP" file="LB_HIP.STL" />
+    <mesh name="LB_HIP_LB_HIP" file="LB_HIP.STL" />
+    <mesh name="collision_LB_THIGH" file="LB_THIGH.STL" />
+    <mesh name="LB_THIGH_LB_THIGH" file="LB_THIGH.STL" />
+    <mesh name="collision_LB_SHANK" file="LB_SHANK.STL" />
+    <mesh name="LB_SHANK_LB_SHANK" file="LB_SHANK.STL" />
+    <mesh name="LB_FOOT_LB_FOOT" file="LB_FOOT.STL" />
+  </asset>
 
   <actuator>
     <motor name="RF_HAA" joint="RF_HAA" />
@@ -248,75 +234,4 @@
     <motor name="LB_HFE" joint="LB_HFE" />
     <motor name="LB_KFE" joint="LB_KFE" />
   </actuator>
-
-  <sensor>
-    <jointpos name="RF_HAA_pos" joint="RF_HAA" />
-    <jointpos name="RF_HFE_pos" joint="RF_HFE" />
-    <jointpos name="RF_KFE_pos" joint="RF_KFE" />
-    <jointpos name="RM_HAA_pos" joint="RM_HAA" />
-    <jointpos name="RM_HFE_pos" joint="RM_HFE" />
-    <jointpos name="RM_KFE_pos" joint="RM_KFE" />
-    <jointpos name="RB_HAA_pos" joint="RB_HAA" />
-    <jointpos name="RB_HFE_pos" joint="RB_HFE" />
-    <jointpos name="RB_KFE_pos" joint="RB_KFE" />
-    <jointpos name="LF_HAA_pos" joint="LF_HAA" />
-    <jointpos name="LF_HFE_pos" joint="LF_HFE" />
-    <jointpos name="LF_KFE_pos" joint="LF_KFE" />
-    <jointpos name="LM_HAA_pos" joint="LM_HAA" />
-    <jointpos name="LM_HFE_pos" joint="LM_HFE" />
-    <jointpos name="LM_KFE_pos" joint="LM_KFE" />
-    <jointpos name="LB_HAA_pos" joint="LB_HAA" />
-    <jointpos name="LB_HFE_pos" joint="LB_HFE" />
-    <jointpos name="LB_KFE_pos" joint="LB_KFE" />
-
-    <jointvel name="RF_HAA_vel" joint="RF_HAA" />
-    <jointvel name="RF_HFE_vel" joint="RF_HFE" />
-    <jointvel name="RF_KFE_vel" joint="RF_KFE" />
-    <jointvel name="RM_HAA_vel" joint="RM_HAA" />
-    <jointvel name="RM_HFE_vel" joint="RM_HFE" />
-    <jointvel name="RM_KFE_vel" joint="RM_KFE" />
-    <jointvel name="RB_HAA_vel" joint="RB_HAA" />
-    <jointvel name="RB_HFE_vel" joint="RB_HFE" />
-    <jointvel name="RB_KFE_vel" joint="RB_KFE" />
-    <jointvel name="LF_HAA_vel" joint="LF_HAA" />
-    <jointvel name="LF_HFE_vel" joint="LF_HFE" />
-    <jointvel name="LF_KFE_vel" joint="LF_KFE" />
-    <jointvel name="LM_HAA_vel" joint="LM_HAA" />
-    <jointvel name="LM_HFE_vel" joint="LM_HFE" />
-    <jointvel name="LM_KFE_vel" joint="LM_KFE" />
-    <jointvel name="LB_HAA_vel" joint="LB_HAA" />
-    <jointvel name="LB_HFE_vel" joint="LB_HFE" />
-    <jointvel name="LB_KFE_vel" joint="LB_KFE" />
-
-    <jointactuatorfrc name="RF_HAA_torque" joint="RF_HAA" noise="0.01" />
-    <jointactuatorfrc name="RF_HFE_torque" joint="RF_HFE" noise="0.01" />
-    <jointactuatorfrc name="RF_KFE_torque" joint="RF_KFE" noise="0.01" />
-    <jointactuatorfrc name="RM_HAA_torque" joint="RM_HAA" noise="0.01" />
-    <jointactuatorfrc name="RM_HFE_torque" joint="RM_HFE" noise="0.01" />
-    <jointactuatorfrc name="RM_KFE_torque" joint="RM_KFE" noise="0.01" />
-    <jointactuatorfrc name="RB_HAA_torque" joint="RB_HAA" noise="0.01" />
-    <jointactuatorfrc name="RB_HFE_torque" joint="RB_HFE" noise="0.01" />
-    <jointactuatorfrc name="RB_KFE_torque" joint="RB_KFE" noise="0.01" />
-    <jointactuatorfrc name="LF_HAA_torque" joint="LF_HAA" noise="0.01" />
-    <jointactuatorfrc name="LF_HFE_torque" joint="LF_HFE" noise="0.01" />
-    <jointactuatorfrc name="LF_KFE_torque" joint="LF_KFE" noise="0.01" />
-    <jointactuatorfrc name="LM_HAA_torque" joint="LM_HAA" noise="0.01" />
-    <jointactuatorfrc name="LM_HFE_torque" joint="LM_HFE" noise="0.01" />
-    <jointactuatorfrc name="LM_KFE_torque" joint="LM_KFE" noise="0.01" />
-    <jointactuatorfrc name="LB_HAA_torque" joint="LB_HAA" noise="0.01" />
-    <jointactuatorfrc name="LB_HFE_torque" joint="LB_HFE" noise="0.01" />
-    <jointactuatorfrc name="LB_KFE_torque" joint="LB_KFE" noise="0.01" />
-
-    <framequat name="imu_quat" objtype="site" objname="imu" />
-    <gyro name="imu_gyro" site="imu" />
-    <accelerometer name="imu_acc" site="imu" />
-    
-    <framepos name="frame_pos" objtype="site" objname="imu" />
-    <framelinvel name="frame_vel" objtype="site" objname="imu" />
-  </sensor>
-
-  <keyframe>
-    <key name="home" qpos="0 0 0.3 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
-      ctrl="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0" />
-  </keyframe>
 </mujoco>
