@@ -18,6 +18,8 @@
 
   <worldbody>
     <body name="base" childclass="robot" pos="0 0 0.336">
+      <freejoint />
+      <site name="imu" pos="0 0 0" />
       <geom name="base_visual" type="box" size="0.0005 0.0005 0.0005" material="default_material" class="visual" />
       <body name="trunk">
         <inertial pos="0.00000732 0.00000000 0.02428745" mass="15.8991" diaginertia="0.0926086 0.47054913 0.53896766" />
@@ -234,4 +236,75 @@
     <motor name="LB_HFE" joint="LB_HFE" />
     <motor name="LB_KFE" joint="LB_KFE" />
   </actuator>
+
+  <sensor>
+    <jointpos name="RF_HAA_pos" joint="RF_HAA" />
+    <jointpos name="RF_HFE_pos" joint="RF_HFE" />
+    <jointpos name="RF_KFE_pos" joint="RF_KFE" />
+    <jointpos name="RM_HAA_pos" joint="RM_HAA" />
+    <jointpos name="RM_HFE_pos" joint="RM_HFE" />
+    <jointpos name="RM_KFE_pos" joint="RM_KFE" />
+    <jointpos name="RB_HAA_pos" joint="RB_HAA" />
+    <jointpos name="RB_HFE_pos" joint="RB_HFE" />
+    <jointpos name="RB_KFE_pos" joint="RB_KFE" />
+    <jointpos name="LF_HAA_pos" joint="LF_HAA" />
+    <jointpos name="LF_HFE_pos" joint="LF_HFE" />
+    <jointpos name="LF_KFE_pos" joint="LF_KFE" />
+    <jointpos name="LM_HAA_pos" joint="LM_HAA" />
+    <jointpos name="LM_HFE_pos" joint="LM_HFE" />
+    <jointpos name="LM_KFE_pos" joint="LM_KFE" />
+    <jointpos name="LB_HAA_pos" joint="LB_HAA" />
+    <jointpos name="LB_HFE_pos" joint="LB_HFE" />
+    <jointpos name="LB_KFE_pos" joint="LB_KFE" />
+
+    <jointvel name="RF_HAA_vel" joint="RF_HAA" />
+    <jointvel name="RF_HFE_vel" joint="RF_HFE" />
+    <jointvel name="RF_KFE_vel" joint="RF_KFE" />
+    <jointvel name="RM_HAA_vel" joint="RM_HAA" />
+    <jointvel name="RM_HFE_vel" joint="RM_HFE" />
+    <jointvel name="RM_KFE_vel" joint="RM_KFE" />
+    <jointvel name="RB_HAA_vel" joint="RB_HAA" />
+    <jointvel name="RB_HFE_vel" joint="RB_HFE" />
+    <jointvel name="RB_KFE_vel" joint="RB_KFE" />
+    <jointvel name="LF_HAA_vel" joint="LF_HAA" />
+    <jointvel name="LF_HFE_vel" joint="LF_HFE" />
+    <jointvel name="LF_KFE_vel" joint="LF_KFE" />
+    <jointvel name="LM_HAA_vel" joint="LM_HAA" />
+    <jointvel name="LM_HFE_vel" joint="LM_HFE" />
+    <jointvel name="LM_KFE_vel" joint="LM_KFE" />
+    <jointvel name="LB_HAA_vel" joint="LB_HAA" />
+    <jointvel name="LB_HFE_vel" joint="LB_HFE" />
+    <jointvel name="LB_KFE_vel" joint="LB_KFE" />
+
+    <jointactuatorfrc name="RF_HAA_torque" joint="RF_HAA" noise="0.01" />
+    <jointactuatorfrc name="RF_HFE_torque" joint="RF_HFE" noise="0.01" />
+    <jointactuatorfrc name="RF_KFE_torque" joint="RF_KFE" noise="0.01" />
+    <jointactuatorfrc name="RM_HAA_torque" joint="RM_HAA" noise="0.01" />
+    <jointactuatorfrc name="RM_HFE_torque" joint="RM_HFE" noise="0.01" />
+    <jointactuatorfrc name="RM_KFE_torque" joint="RM_KFE" noise="0.01" />
+    <jointactuatorfrc name="RB_HAA_torque" joint="RB_HAA" noise="0.01" />
+    <jointactuatorfrc name="RB_HFE_torque" joint="RB_HFE" noise="0.01" />
+    <jointactuatorfrc name="RB_KFE_torque" joint="RB_KFE" noise="0.01" />
+    <jointactuatorfrc name="LF_HAA_torque" joint="LF_HAA" noise="0.01" />
+    <jointactuatorfrc name="LF_HFE_torque" joint="LF_HFE" noise="0.01" />
+    <jointactuatorfrc name="LF_KFE_torque" joint="LF_KFE" noise="0.01" />
+    <jointactuatorfrc name="LM_HAA_torque" joint="LM_HAA" noise="0.01" />
+    <jointactuatorfrc name="LM_HFE_torque" joint="LM_HFE" noise="0.01" />
+    <jointactuatorfrc name="LM_KFE_torque" joint="LM_KFE" noise="0.01" />
+    <jointactuatorfrc name="LB_HAA_torque" joint="LB_HAA" noise="0.01" />
+    <jointactuatorfrc name="LB_HFE_torque" joint="LB_HFE" noise="0.01" />
+    <jointactuatorfrc name="LB_KFE_torque" joint="LB_KFE" noise="0.01" />
+
+    <framequat name="imu_quat" objtype="site" objname="imu" />
+    <gyro name="imu_gyro" site="imu" />
+    <accelerometer name="imu_acc" site="imu" />
+    
+    <framepos name="frame_pos" objtype="site" objname="imu" />
+    <framelinvel name="frame_vel" objtype="site" objname="imu" />
+  </sensor>
+
+  <keyframe>
+    <key name="home" qpos="0 0 0.3 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0"
+      ctrl="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0" />
+  </keyframe>
 </mujoco>
