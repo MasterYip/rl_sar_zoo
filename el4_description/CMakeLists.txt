@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8.3)
 
-project(el_mini)
+project(el4_description)
 
 find_package(catkin REQUIRED)
 
